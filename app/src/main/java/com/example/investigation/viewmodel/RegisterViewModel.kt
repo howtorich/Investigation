@@ -1,20 +1,15 @@
 package com.example.investigation.viewmodel
 
 import android.app.Application
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import com.example.investigation.model.RegResponse
 import com.example.investigation.model.Register
 import com.example.investigation.model.RegisterApiService
 import com.example.investigation.utils.SharedPreferenceHelper
-import com.example.investigation.view.MainActivity
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
