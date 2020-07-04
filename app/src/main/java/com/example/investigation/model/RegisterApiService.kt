@@ -18,5 +18,9 @@ class RegisterApiService {
     fun getUserDetailsService(obj:Register):Single<RegResponse>{
         return api.getUserDetails(obj)
     }
+
+    fun addFrinedService(obj:AddingFriend):Single<RegResponse>{
+        return api.addFriend(obj)
+    }
 }
 

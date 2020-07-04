@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.example.investigation.model.RegResponse
 import com.example.investigation.model.Register
 import com.example.investigation.model.RegisterApiService
@@ -16,11 +17,13 @@ import io.reactivex.schedulers.Schedulers
 class RegisterViewModel(application: Application):AndroidViewModel(application) {
     private val apiService= RegisterApiService()
     private val disposible= CompositeDisposable()
-    var result:Boolean = false
+    //var result:Boolean = false
+    val subButton by lazy { MutableLiveData<Boolean>() }
+
 
     private  val prefs= SharedPreferenceHelper(getApplication())
 
-   fun postRegisterDetails(response:Register):Boolean{
+   fun postRegisterDetails(response:Register){
        disposible.add(
            apiService.getUserDetailsService(response)
                .subscribeOn(Schedulers.newThread())
@@ -29,10 +32,10 @@ class RegisterViewModel(application: Application):AndroidViewModel(application) 
                    override fun onSuccess(response: RegResponse) {
                        var v1=response.chatRegisterUserOutput?.userName.toString()
                        var v2=response.chatRegisterUserOutput?.userId.toString()
-
+                       subButton.value=true
                        prefs.saveUname(v1)
                        prefs.saveUID(v2)
-                        result=true
+                        //result=true
                    }
 
                    override fun onError(e: Throwable) {
@@ -46,7 +49,7 @@ class RegisterViewModel(application: Application):AndroidViewModel(application) 
                })
        )
 
-        return result
+        //return result
     }
 
 

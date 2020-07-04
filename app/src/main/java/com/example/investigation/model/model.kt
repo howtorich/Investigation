@@ -23,7 +23,7 @@ data class RegResponse(
     @SerializedName("chatRegisteredUsers")
     val chatRegisteredUsers:String?,
 
-    @SerializedName("chatRegisteredUserFriends")
+    @SerializedName("friends")
     val chatRegisteredUserFriends:ArrayList<RegResp>?,
 
     @SerializedName("responseModel")
@@ -52,10 +52,32 @@ data class RegResp(
               )
 
 data class ResponseModelStatus(
+
     @SerializedName("executionalStatus")
     val executionalStatus:Int?,
+
     @SerializedName("errorStatus")
-    val errorStatus:Int?,
+    val errorStatus:Long?,
+
     @SerializedName("errorMessage")
     val errorMessage:String?
+
+)
+
+data class AddingFriend(
+    @SerializedName("ApiAction")
+    val ApiAction:Int?,
+
+    @SerializedName("addFriend")
+    val AddFrined:AddFriendModel?
+
+
+)
+data class AddFriendModel(
+
+    @SerializedName("UserId")
+    val userId:Long?,
+
+    @SerializedName("AddingFriendUserId")
+    val AddingFriendUserId:Long?
 )

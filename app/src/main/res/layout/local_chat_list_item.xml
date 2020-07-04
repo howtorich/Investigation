@@ -3,13 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="200dp"
+    android:layout_margin="2dp"
+    >
 
 
     <ImageView
         android:id="@+id/userImage"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:src="@mipmap/ic_launcher"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,7 +21,7 @@
         android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+
         app:layout_constraintEnd_toEndOf="@+id/userImage"
         app:layout_constraintStart_toStartOf="@+id/userImage"
         app:layout_constraintTop_toBottomOf="@+id/userImage" />

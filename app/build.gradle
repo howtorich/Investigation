@@ -36,6 +36,7 @@ def rxJavaVersion = '2.1.1'
 def navVersion = '2.1.0-alpha05'
 def daggerVersion = '2.14.1'
 def mockitoVersion = '2.11.0'
+def materialDesign="1.2.0-alpha02"
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -73,6 +74,8 @@ dependencies {
     kaptTest "com.google.dagger:dagger-compiler:$daggerVersion"
 
     implementation "androidx.preference:preference-ktx:1.1.0"
+
+    implementation "com.google.android.material:material:$materialDesign"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
