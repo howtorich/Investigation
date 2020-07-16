@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="toolbarcolor">#1297DD</color>
     <color name="whitecolor">#E2ECEC</color>
+    <color name="colorwhite">#F3F6F6</color>
+    <color name="gray_360">#DFDBD8</color>
 </resources>

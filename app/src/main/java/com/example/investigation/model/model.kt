@@ -8,8 +8,16 @@ import com.google.gson.annotations.SerializedName
 data class Register(
     @SerializedName("ApiAction")
     val ApiAction:Int?,
+
     @SerializedName("chatRegisterUserModel")
-    val chatRegisterUserModel:RegResp?
+    val chatRegisterUserModel:RegResp?,
+
+    @SerializedName("chatConversationModel")
+    val chatConversationModel:ChatInputModel?
+)
+data class ChatInputModel(
+    @SerializedName("Chat_bwt")
+    val Chat_bwt:String?
 )
 //data class registerModel(
 //    @SerializedName("UserName")
@@ -28,6 +36,12 @@ data class RegResponse(
 
     @SerializedName("responseModel")
     val responseModel:ResponseModelStatus?,
+
+    @SerializedName("userApplicationDetailsModel")
+    val userDetailsModel:UserModel?,
+
+    @SerializedName("chatConversationModel")
+    val chatConversationModel:chatOutputModel?,
 
     @SerializedName("errorMessage")
     val errorMessage:String?,
@@ -80,4 +94,44 @@ data class AddFriendModel(
 
     @SerializedName("AddingFriendUserId")
     val AddingFriendUserId:Long?
+)
+
+
+data class UserModel(
+    @SerializedName("userName")
+    val username:String?,
+
+    @SerializedName("online")
+    val online:Boolean?,
+
+    @SerializedName("recentChatUsers")
+    val recentChatUsers:String?
+
+)
+
+data class chatOutputModel(
+    @SerializedName("chat_bwt")
+    val chat_bwt:String?,
+
+    @SerializedName("conversationId")
+    val conversationId:Long?,
+
+    @SerializedName("chatRequestByUserId")
+    val chatRequestByUserId:Long?,
+
+    @SerializedName("conversationMesgCount")
+    val conversationMesgCount:Long?,
+
+    @SerializedName("unreadMesgCount")
+    val unreadMesgCount:Long?,
+
+    @SerializedName("conversationType")
+    val conversationType:Long?,
+
+    @SerializedName("isActive")
+    val isActive:Boolean?
+
+
+
+
 )

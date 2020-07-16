@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_globalchat"
             app:destination="@id/globalChatListFragment" />
+        <action
+            android:id="@+id/action_mychatlistpagetouserchatpage"
+            app:destination="@id/userChatPage" />
     </fragment>
     <fragment
         android:id="@+id/globalChatListFragment"
@@ -20,6 +23,15 @@
         tools:layout="@layout/fragment_global_chat_list" >
         <action
             android:id="@+id/action_mychatlist"
+            app:destination="@id/myChatListPageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userChatPage"
+        android:name="com.example.investigation.view.UserChatPage"
+        android:label="fragment_user_chat_page"
+        tools:layout="@layout/fragment_user_chat_page" >
+        <action
+            android:id="@+id/action_userchatpagetomychatlistpage"
             app:destination="@id/myChatListPageFragment" />
     </fragment>
 </navigation>

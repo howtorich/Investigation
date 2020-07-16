@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.investigation.R
 import com.example.investigation.adapters.GlobalFriendsChatListAdapter
 import com.example.investigation.model.AddFriendModel
@@ -31,45 +32,37 @@ import kotlin.concurrent.schedule
 
 class GlobalChatListFragment : Fragment() {
 
-
     private lateinit var viewmodel: MyChatListViewModel
-    private val listAdapter= GlobalFriendsChatListAdapter(arrayListOf()){uid: Long? ->adapterClick(uid)  }
+    private val listAdapter = GlobalFriendsChatListAdapter(
+        arrayListOf(),
+        this
+    ) { uid: Long?, position: Int -> adapterClick(uid, position) }
 
-    private val userListDataObserver = Observer<List<RegResp>>{list:List<RegResp>->
-        list?.let {
-            allfrineds_list.visibility=View.VISIBLE
+
+    private val userListDataObserver = Observer<List<RegResp>> { list: List<RegResp> ->
+        list.let {
+            allfrineds_list.visibility = View.VISIBLE
             listAdapter.updateMyChatList(it)
         }
     }
 
-    private val loadingLivedataObserver= Observer<Boolean> {
-        loader.visibility=if(it) View.VISIBLE else View.GONE
-        if(it){
-            errorMessage.visibility=View.GONE
-            allfrineds_list.visibility=View.GONE
+    private val loadingLivedataObserver = Observer<Boolean> {
+        loader.visibility = if (it) View.VISIBLE else View.GONE
+        if (it) {
+            errorMessage.visibility = View.GONE
+            allfrineds_list.visibility = View.GONE
         }
     }
 
-    private val errorLivedataobserver= Observer<Boolean> {
-        errorMessage.visibility=if(it) View.VISIBLE else View.GONE
-        if(it){
-            allfrineds_list.visibility=View.GONE
-            loader.visibility=View.GONE
+    private val errorLivedataobserver = Observer<Boolean> {
+        errorMessage.visibility = if (it) View.VISIBLE else View.GONE
+        if (it) {
+            allfrineds_list.visibility = View.GONE
+            loader.visibility = View.GONE
         }
 
     }
 
-    private val addfriendresponseobserver= Observer<Boolean> {
-        if(it){
-            context.let {
-                Toast.makeText(it,"Friend Request Sent",Toast.LENGTH_SHORT).show()
-
-            }
-            listAdapter.notifyDataSetChanged()
-
-
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,52 +74,59 @@ class GlobalChatListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (activity as? AppCompatActivity)?.supportActionBar?.title = "All Users"
-        val prefs= context?.let { SharedPreferenceHelper(it) }
 
+        (activity as? AppCompatActivity)?.supportActionBar?.title = "All Users"
+        val prefs = context?.let { SharedPreferenceHelper(it) }
 
         viewmodel = ViewModelProviders.of(this).get(MyChatListViewModel::class.java)
-        val actionId:Int=103
-        val uname= prefs?.getUName()
-        val uid=prefs?.getUID()
+        val actionId: Int = 103
+        val uname = prefs?.getUName()
+        val uid = prefs?.getUID()
 
-        viewmodel.postRegisterDetails(Register(actionId, RegResp(uname,uid?.toLong())))
+        viewmodel.postRegisterDetails(Register(actionId, RegResp(uname, uid?.toLong()), null))
         //viewmodel.postRegisterDetails(Register(actionId, RegResp("",1)))
 
-        viewmodel.users.observe(this,userListDataObserver)
-        viewmodel.loading.observe(this,loadingLivedataObserver)
-        viewmodel.loadError.observe(this,errorLivedataobserver)
+        viewmodel.users.observe(viewLifecycleOwner, userListDataObserver)
+        viewmodel.loading.observe(viewLifecycleOwner, loadingLivedataObserver)
+        viewmodel.loadError.observe(viewLifecycleOwner, errorLivedataobserver)
 
         allfrineds_list.apply {
-            layoutManager=GridLayoutManager(context,1)
-            adapter=listAdapter
+            layoutManager = LinearLayoutManager(context)
+            adapter = listAdapter
         }
         refreshLayout.setOnRefreshListener {
-            errorMessage.visibility=View.GONE
-            loader.visibility=View.VISIBLE
-            viewmodel.postRegisterDetails(Register(actionId, RegResp(uname,uid?.toLong())))
-            //viewmodel.postRegisterDetails(Register(actionId, RegResp("",1)))
-            refreshLayout.isRefreshing=false
+            errorMessage.visibility = View.GONE
+            loader.visibility = View.VISIBLE
+            viewmodel.postRegisterDetails(Register(actionId, RegResp(uname, uid?.toLong()), null))
+            refreshLayout.isRefreshing = false
         }
-
-
-
-
     }
 
-    fun adapterClick(item:Long?){
+    fun adapterClick(item: Long?, position: Int) {
 
         viewmodel = ViewModelProviders.of(this).get(MyChatListViewModel::class.java)
-        val prefs= context?.let { SharedPreferenceHelper(it) }
+        val prefs = context?.let { SharedPreferenceHelper(it) }
 
-        val actionId:Int=104
-        val uid=prefs?.getUID()
-        val frdUserId=item
-       viewmodel.postAddFriendDetails(AddingFriend(actionId, AddFriendModel(uid?.toLong(),frdUserId)))
-        viewmodel.addFriendResult.observe(this,addfriendresponseobserver)
-
-
+        val actionId: Int = 104
+        val uid = prefs?.getUID()
+        val frdUserId = item
+        viewmodel.postAddFriendDetails(
+            AddingFriend(
+                actionId,
+                AddFriendModel(uid?.toLong(), frdUserId)
+            )
+        )
+        viewmodel.addFriendResult.observe(this, Observer<Boolean> {
+            if (it) {
+                context.let {
+                    Toast.makeText(it, "Friend Request Sent", Toast.LENGTH_SHORT).show()
+                    listAdapter.setSelectedposition(position)
+                    listAdapter.notifyItemChanged(position)
+                }
+            }
+        })
 
     }
+
 
 }
